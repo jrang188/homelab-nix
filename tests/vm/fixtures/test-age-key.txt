@@ -1,0 +1,5 @@
+# THROWAWAY TEST KEY - not used for any real secret, safe to commit.
+# Only decrypts tests/vm/fixtures/secrets.yaml, which contains dummy values.
+# created: 2026-08-08T21:44:06-07:00
+# public key: age1ts9g23ws6rfc3ktfhgpeea94ktqszz78vy93r2w07l6geczxqa4qyug57p
+AGE-SECRET-KEY-1FQ5PV7FJCSRXNAYKZN9ZNCAE6CNWPQ3ZPF9T0Q582EYS63N3MH8SFGFCS6
