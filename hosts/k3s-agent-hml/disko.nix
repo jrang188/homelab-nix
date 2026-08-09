@@ -1,7 +1,7 @@
 {
   disko.devices = {
     disk.main = {
-      device = "/dev/disk/by-id/REPLACE_ME_WITH_REAL_DISK_ID";
+      device = "/dev/disk/by-id/ata-T-FORCE_512GB_TPBF2406260010212013";
       type = "disk";
       content = {
         type = "gpt";

@@ -10,22 +10,19 @@
     ../../modules/drain-hook.nix
   ];
 
-  networking.hostName = "k3s-agent-hml";
-
   homelab.k3sAgent = {
     enable = true;
-    # TODO: replace with a real control plane's Tailscale MagicDNS
-    # hostname before first deploy (see ../../docs/adr for why any one
-    # reachable control plane is enough - k3s's own agent load-balancer
-    # discovers the others after first contact).
-    serverAddr = "https://REPLACE_ME_CONTROL_PLANE.REPLACE_ME.ts.net:6443";
+    serverAddr = "https://k3s-control-plane-cxs.tail8255cc.ts.net:6443";
   };
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.useDHCP = lib.mkDefault true;
-  networking.firewall.enable = true;
+  networking = {
+    hostName = "k3s-agent-hml";
+    useDHCP = lib.mkDefault true;
+    firewall.enable = true;
+  };
 
   services.openssh = {
     enable = true;
@@ -39,12 +36,18 @@
   # nixos-anywhere's initial install and any fallback access outside
   # Tailscale SSH (services.tailscale's --ssh flag, see ../../modules/tailscale.nix).
   users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAREPLACEMEREPLACEMEREPLACEMEREPLACEMEREPLACEME replace-me@example.com"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGy4mAWMh9Ts5qlE2ollxo4CtHGKdtSQ91z6xcXRUcj5"
   ];
 
-  environment.systemPackages = [ pkgs.git pkgs.kubectl ];
+  environment.systemPackages = [
+    pkgs.git
+    pkgs.kubectl
+  ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   time.timeZone = "America/Vancouver";
 

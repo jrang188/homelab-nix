@@ -3,16 +3,15 @@
 Placeholders that must be filled in with real values before this host can
 actually be installed/deployed (search the repo for `REPLACE_ME` / `TODO`):
 
-1. **`disko.nix`** — `disk.main.device`: boot the machine with any Linux
-   installer, run `ls /dev/disk/by-id/` to find the real disk identifier.
-2. **`configuration.nix`** — `homelab.k3sAgent.serverAddr`: any one control
-   plane's Tailscale MagicDNS hostname (Tailscale admin console → Machines).
-3. **`configuration.nix`** — `users.users.root.openssh.authorizedKeys.keys`:
-   your real SSH public key, needed for `nixos-anywhere`'s install step and
-   any fallback access outside Tailscale SSH.
+1. ~~**`disko.nix`** — `disk.main.device`~~ — done
+   (`ata-T-FORCE_512GB_TPBF2406260010212013`).
+2. ~~**`configuration.nix`** — `homelab.k3sAgent.serverAddr`~~ — done
+   (`k3s-control-plane-cxs.tail8255cc.ts.net`).
+3. ~~**`configuration.nix`** — `users.users.root.openssh.authorizedKeys.keys`~~
+   — done.
 4. **`hardware-configuration.nix`** — regenerate against real hardware after
    install (`nixos-generate-config --no-filesystems`), see the comment in
-   that file.
+   that file. Last remaining placeholder before install.
 
 ## Secrets (not yet created — see ../../modules/secrets.nix)
 
