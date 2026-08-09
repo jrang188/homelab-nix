@@ -4,7 +4,10 @@
     enable = true;
     authKeyFile = config.sops.secrets."tailscale-authkey".path;
     extraUpFlags = [
-      "--advertise-tags=tag:k8s-home-agent"
+      # Tag naming convention (shared with ../opentofu-infra): tag:k8s-<role>
+      # or tag:k8s-<role>-<location>. Requires tag:k8s-agent-home to be owned
+      # in the Tailnet ACL's tagOwners before this applies cleanly.
+      "--advertise-tags=tag:k8s-agent-home"
       "--accept-dns=false"
       "--accept-routes"
       "--ssh"
