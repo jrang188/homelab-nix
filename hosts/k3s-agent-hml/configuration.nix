@@ -12,7 +12,7 @@
 
   homelab.k3sAgent = {
     enable = true;
-    serverAddr = "https://k3s-control-plane-cxs.tail8255cc.ts.net:6443";
+    serverAddr = "https://k3s-control-plane-iws.tail8255cc.ts.net:6443";
   };
 
   boot.loader.systemd-boot.enable = true;
