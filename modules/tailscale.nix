@@ -8,7 +8,10 @@
       # or tag:k8s-<role>-<location>. Requires tag:k8s-agent-home to be owned
       # in the Tailnet ACL's tagOwners before this applies cleanly.
       "--advertise-tags=tag:k8s-agent-home"
-      "--accept-dns=false"
+      # MagicDNS must stay accepted (default) - homelab.k3sAgent.serverAddr
+      # is a .ts.net hostname, and control planes get re-provisioned with
+      # new hostnames periodically (already happened once), so this can't
+      # be swapped for a raw IP either.
       "--accept-routes"
       "--ssh"
     ];
