@@ -1,8 +1,7 @@
 keys:
   - &test_vm age1ts9g23ws6rfc3ktfhgpeea94ktqszz78vy93r2w07l6geczxqa4qyug57p
-  # - &k3s_agent_hml age1REPLACE_ME  # derived from the real host's SSH host
-  #   key via `ssh-to-age` after nixos-anywhere installs it; fill in before
-  #   creating hosts/k3s-agent-hml/secrets.yaml
+  - &k3s_agent_hml age1746q22ntdsvg03udazu4vleutf2jdp56u7mq2heysf0ngpxkzvesextmgw
+  - &sterling_mbp age1vuljkgejlfq99kq0gvn3vv89m8emlzxm8sc6m46hvdmes75recasfd9rp8
 
 creation_rules:
   - path_regex: tests/vm/fixtures/secrets\.yaml$
@@ -10,7 +9,8 @@ creation_rules:
       - age:
           - *test_vm
 
-  # - path_regex: hosts/k3s-agent-hml/secrets\.yaml$
-  #   key_groups:
-  #     - age:
-  #         - *k3s_agent_hml
+  - path_regex: hosts/k3s-agent-hml/secrets\.yaml$
+    key_groups:
+      - age:
+          - *k3s_agent_hml
+          - *sterling_mbp
