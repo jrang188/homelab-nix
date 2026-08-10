@@ -7,9 +7,10 @@ This file provides guidance to any coding agent when working with code in this r
 A Nix flake defining NixOS host configurations for the user's homelab.
 Currently one host, `k3s-agent-hml`: a physical mini PC joining an existing
 3-control-plane k3s cluster on Hetzner (provisioned separately by
-`../opentofu-infra`, the `kube-hetzner` Terraform/OpenTofu module) as a k3s
-agent over Tailscale. The repo is structured multi-host-ready
-(`hosts/<name>/`, shared `modules/`) since more hosts are expected.
+[opentofu-infra](https://github.com/jrang188/opentofu-infra), the
+`kube-hetzner` Terraform/OpenTofu module) as a k3s agent over Tailscale.
+The repo is structured multi-host-ready (`hosts/<name>/`, shared `modules/`)
+since more hosts are expected.
 
 ## Commands
 
@@ -81,7 +82,8 @@ The Hetzner cluster's flannel CNI is bound to Hetzner's private network
 interface, not Tailscale — Tailscale there is management-only (SSH/kubectl).
 A home-joined node's pods can't reach cluster-hosted services until the
 control planes advertise their private-network routes over Tailscale, a
-companion change that lives in the separate `../opentofu-infra` repo and
+companion change that lives in the separate
+[opentofu-infra](https://github.com/jrang188/opentofu-infra) repo and
 isn't applied by anything here (`docs/adr/0001`). Read that ADR before
 assuming a home node has full pod-network connectivity.
 

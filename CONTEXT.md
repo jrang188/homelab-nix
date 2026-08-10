@@ -44,3 +44,10 @@ Two distinct secrets, both delivered via sops-nix, never in git plaintext:
   uses a reusable, non-ephemeral key (matching the control planes'
   convention) and a dedicated ACL tag (`tag:k8s-home-agent`), not the
   user's personal Tailscale identity.
+
+## Related repositories
+
+- [homelab-k8s](https://github.com/jrang188/homelab-k8s) — Helm chart repository
+  defining cluster workloads and services.
+- [opentofu-infra](https://github.com/jrang188/opentofu-infra) — OpenTofu/Terraform
+  code provisioning the Hetzner k3s control planes using the `kube-hetzner` module.
