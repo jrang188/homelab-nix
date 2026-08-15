@@ -10,6 +10,7 @@ pkgs.testers.nixosTest {
         ../../modules/secrets.nix
         ../../modules/tailscale.nix
         ../../modules/k3s-agent.nix
+        ../../modules/gvisor.nix
       ];
 
       networking.hostName = "k3s-agent-hml-test";
@@ -22,6 +23,8 @@ pkgs.testers.nixosTest {
         # VM). See tests/vm/README.md.
         serverAddr = "https://127.0.0.1:16443";
       };
+
+      homelab.gvisor.enable = true;
 
       # Test-only: throwaway fixture key/file instead of the real host's
       # ssh-host-key-derived one (see modules/secrets.nix).
@@ -47,5 +50,18 @@ pkgs.testers.nixosTest {
 
     ts_state = machine.succeed("systemctl is-active tailscaled.service").strip()
     assert ts_state == "active", f"tailscaled.service not active: {ts_state!r}"
+
+    # gvisor: containerd must have the `runsc` runtime registered. The
+    # handler name has to match the cluster-side RuntimeClass's `handler`
+    # field exactly (homelab-k8s, ADR-0003 there).
+    ctmpl = machine.succeed("cat /var/lib/rancher/k3s/agent/etc/containerd/config.toml.tmpl")
+    assert 'runtimes."runsc"' in ctmpl, "runsc runtime not registered in containerd config template"
+    assert 'io.containerd.runsc.v1' in ctmpl, "runsc runtime_type not set to gvisor's containerd shim type"
+
+    # gvisor: pkgs.gvisor must provide the containerd shim at the path the
+    # k3s unit's PATH points at (systemd.services.k3s.path in
+    # modules/gvisor.nix). Check the exact store path rather than scanning
+    # the whole store.
+    machine.succeed("test -x ${pkgs.gvisor}/bin/containerd-shim-runsc-v1")
   '';
 }

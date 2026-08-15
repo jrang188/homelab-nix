@@ -6,6 +6,7 @@
     ../../modules/secrets.nix
     ../../modules/tailscale.nix
     ../../modules/k3s-agent.nix
+    ../../modules/gvisor.nix
     ../../modules/auto-upgrade.nix
     ../../modules/drain-hook.nix
   ];
@@ -14,6 +15,11 @@
     enable = true;
     serverAddr = "https://k3s-control-plane-iws.tail8255cc.ts.net:6443";
   };
+
+  # Companion to the cluster-side gVisor `RuntimeClass` (homelab-k8s,
+  # ADR-0003 there). This module is what makes the `runsc` handler resolve
+  # to a working runtime on this node. See modules/gvisor.nix.
+  homelab.gvisor.enable = true;
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

@@ -91,6 +91,34 @@ Also see [ADR 0001](../../docs/adr/0001-tailscale-subnet-routes-for-home-agent-p
 — `advertise_node_private_routes = true` in `../opentofu-infra`, needed for
 this node's own pods to reach cluster-hosted services. Already applied.
 
+## gVisor (`runsc`) — installed
+
+`modules/gvisor.nix` is imported and `homelab.gvisor.enable = true` is set,
+so the host's containerd registers the `runsc` runtime handler — gvisor's
+`runsc` binary + `containerd-shim-runsc-v1` shim, added to the k3s unit's
+PATH. This is the host-side companion to the cluster-side `RuntimeClass`
+(handler `runsc`), which lives in the sibling `homelab-k8s` repo
+(`infra/gvisor/`, per ADR-0003 there) and is still pending there; until it
+lands, no pod can actually schedule with `runtimeClassName: gvisor`.
+
+Verify after install (on this host, over Tailscale SSH):
+
+```
+sudo cat /var/lib/rancher/k3s/agent/etc/containerd/config.toml.tmpl | grep -A1 runsc
+```
+
+End-to-end smoke test once the cluster-side RuntimeClass lands:
+
+```
+kubectl run gvisor-test --rm -it --restart=Never \
+  --image=docker.io/library/alpine --overrides='{ "spec": { "runtimeClassName": "gvisor" } }' \
+  -- top
+```
+
+Should land on this node and the `STATUS` should reach `Running`. The
+cluster-side RuntimeClass scopes gVisor to the home node (ADR-0003); this
+host's `runsc` install is what makes the container actually start.
+
 ## Install
 
 ```
